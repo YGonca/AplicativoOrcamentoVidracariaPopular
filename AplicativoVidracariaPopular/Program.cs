@@ -5,15 +5,18 @@ namespace AplicativoVidracariaPopular
     internal static class Program
     {
         public static double valorVidro = 0.02;
+        public static double valorVidroAR = 0.06;
         public static double valorMdf = 0.01;
 
         public static bool[] moldura1 = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] moldura2 = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] moldura3 = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] vidro = { false, false, false, false, false, false, false, false, false, false };
+        public static bool[] vidroAR = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] mdf = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] paspatur = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] extra = { false, false, false, false, false, false, false, false, false, false };
+        public static bool[] quadroExistente = { false, false, false, false, false, false, false, false, false, false };
         public static string[] moldura1Tipo1 = { "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000" };
         public static string[] moldura1Tipo2 = { "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000" };
         public static string[] moldura2Tipo1 = { "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000" };

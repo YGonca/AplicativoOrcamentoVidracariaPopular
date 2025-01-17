@@ -1,3 +1,4 @@
+using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing.Printing;
@@ -6,9 +7,12 @@ using System.IO;
 using System.IO.Packaging;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Ink;
+using System.Windows.Shapes;
 using System.Windows.Xps;
+using System.Xml;
 using AplicativoVidracariaPopular;
 using GemBox.Pdf;
 using OfficeOpenXml;
@@ -89,9 +93,10 @@ namespace AplicativoVidracariaPopular
             {
                 if (buttonArray[i].BackColor.Equals(Color.FromArgb(46, 51, 73)))
                 {
+                    Program.quadroExistente[i] = true;
                     if (formQuadros[i].checkBoxMoldura1.Checked)
                     {
-                        valorTabela = excel(Convert.ToDecimal(formQuadros[i].textBoxMolduraTipo1.Text), Convert.ToDecimal(formQuadros[i].textBoxMolduraTipo1_2.Text));
+                        valorTabela = excel(formQuadros[i].textBoxMolduraTipo1.Text, formQuadros[i].textBoxMolduraTipo1_2.Text);
 
                         if (formQuadros[i].numericUpDownMoldura1.Value == 0 | formQuadros[i].numericUpDownMoldura1_2.Value == 0)
                             MessageBox.Show("Não Deixe Valores Zerados", "Valor Zerado Tamanho 1",
@@ -121,7 +126,7 @@ namespace AplicativoVidracariaPopular
 
                     if (formQuadros[i].checkBoxMoldura2.Checked)
                     {
-                        valorTabela = excel(Convert.ToDecimal(formQuadros[i].textBoxMolduraTipo2.Text), Convert.ToDecimal(formQuadros[i].textBoxMolduraTipo2_2.Text));
+                        valorTabela = excel(formQuadros[i].textBoxMolduraTipo2.Text, formQuadros[i].textBoxMolduraTipo2_2.Text);
 
                         if (valorTabela == 0)
                             MessageBox.Show("Tipo de Moldura 2 não Reconhecida", "Erro na escolha de Moldura 2",
@@ -137,7 +142,7 @@ namespace AplicativoVidracariaPopular
 
                     if (formQuadros[i].checkBoxMoldura3.Checked)
                     {
-                        valorTabela = excel(Convert.ToDecimal(formQuadros[i].textBoxMolduraTipo3.Text), Convert.ToDecimal(formQuadros[i].textBoxMolduraTipo3_2.Text));
+                        valorTabela = excel(formQuadros[i].textBoxMolduraTipo3.Text, formQuadros[i].textBoxMolduraTipo3_2.Text);
 
                         if (valorTabela == 0)
                             MessageBox.Show("Tipo de Moldura 3 não Reconhecida", "Erro na escolha de Moldura 3",
@@ -173,6 +178,28 @@ namespace AplicativoVidracariaPopular
                         }
                     }
 
+                    if (formQuadros[i].checkBoxVidroAR.Checked)
+                    {
+                        if (formQuadros[i].numericUpDownMoldura1.Value == 0 | formQuadros[i].numericUpDownMoldura1_2.Value == 0)
+                            MessageBox.Show("Não Deixe Valores Zerados", "Valor Zerado Tamanho 1",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        else if (formQuadros[i].numericUpDownQuantidade.Value == 0)
+                            MessageBox.Show("Não Deixe Valores Zerados", "Valor Zerado Quantidade 1",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        else if (formQuadros[i].textBoxDescricao.Text == "")
+                            MessageBox.Show("Não Deixe Valores Zerados", "Valor Zerado Descrição 1",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        else
+                        {
+                            Program.vidroAR[i] = formQuadros[i].checkBoxVidroAR.Checked;
+                            Program.molduraTamanho1[i] = Convert.ToDouble(formQuadros[i].numericUpDownMoldura1.Value);
+                            Program.molduraTamanho2[i] = Convert.ToDouble(formQuadros[i].numericUpDownMoldura1_2.Value);
+                            Program.quantidade[i] = Convert.ToDouble(formQuadros[i].numericUpDownQuantidade.Value);
+                            Program.descricao[i] = formQuadros[i].textBoxDescricao.Text;
+                            valorUnitario += (Program.molduraTamanho1[i] * Program.molduraTamanho2[i]) * Program.valorVidroAR;
+                        }
+                    }
+
                     if (formQuadros[i].checkBoxMdf.Checked)
                     {
                         if (formQuadros[i].numericUpDownMoldura1.Value == 0 | formQuadros[i].numericUpDownMoldura1_2.Value == 0)
@@ -204,6 +231,7 @@ namespace AplicativoVidracariaPopular
                             Program.paspaturTamanho[i] = Convert.ToDouble(formQuadros[i].numericUpDownPaspaturTamanho.Value);
                             Program.paspaturValor[i] = Convert.ToDouble(formQuadros[i].numericUpDownPaspaturValor.Value);
                             Program.descricao[i] = formQuadros[i].textBoxDescricao.Text;
+                            Program.quantidade[i] = Convert.ToDouble(formQuadros[i].numericUpDownQuantidade.Value);
                             valorUnitario += Program.paspaturValor[i];
                         }
                     }
@@ -218,11 +246,10 @@ namespace AplicativoVidracariaPopular
                             Program.extra[i] = formQuadros[i].checkBoxMolduraExtra.Checked;
                             Program.extraValor[i] = Convert.ToDouble(formQuadros[i].numericUpDownExtra.Value);
                             Program.descricao[i] = formQuadros[i].textBoxDescricao.Text;
-                            valorTotal = (valorUnitario * Program.quantidade[i]) + Program.extraValor[i];
+                            valorUnitario += Program.extraValor[i];
                         }
                     }
-                    else
-                        valorTotal = (valorUnitario * Program.quantidade[i]);
+                    valorTotal = valorUnitario * Program.quantidade[i];
 
                     Program.valorUnitario[i] = valorUnitario;
                     Program.valorTotal[i] = valorTotal;
@@ -246,7 +273,15 @@ namespace AplicativoVidracariaPopular
                 DALOrcamento.Add(textBoxNome.Text);
                 int id = DALOrcamento.GetId();
 
-                word(id);
+                int rowCount = 0;
+                foreach (var qE in Program.quadroExistente)
+                {
+                    if(qE)
+                        rowCount++;
+                }
+
+
+                word(id, rowCount);
 
                 using (var doc = new Spire.Doc.Document())
                 {
@@ -271,9 +306,11 @@ namespace AplicativoVidracariaPopular
                 Program.moldura2 = [false, false, false, false, false, false, false, false, false, false];
                 Program.moldura3 = [false, false, false, false, false, false, false, false, false, false];
                 Program.vidro = [false, false, false, false, false, false, false, false, false, false];
+                Program.vidroAR = [false, false, false, false, false, false, false, false, false, false];
                 Program.mdf = [false, false, false, false, false, false, false, false, false, false];
                 Program.paspatur = [false, false, false, false, false, false, false, false, false, false];
                 Program.extra = [false, false, false, false, false, false, false, false, false, false];
+                Program.quadroExistente = [false, false, false, false, false, false, false, false, false, false];
                 Program.moldura1Tipo1 = ["0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000"];
                 Program.moldura1Tipo2 = ["0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000"];
                 Program.moldura2Tipo1 = ["0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000", "0000"];
@@ -326,6 +363,7 @@ namespace AplicativoVidracariaPopular
                     formQuadro.checkBoxMoldura2.Checked = false;
                     formQuadro.checkBoxMoldura3.Checked = false;
                     formQuadro.checkBoxVidro.Checked = false;
+                    formQuadro.checkBoxVidroAR.Checked = false;
                     formQuadro.checkBoxMdf.Checked = false;
                     formQuadro.checkBoxPaspatur.Checked = false;
                     formQuadro.checkBoxMolduraExtra.Checked = false;
@@ -348,7 +386,7 @@ namespace AplicativoVidracariaPopular
             }
         }
 
-        private double excel(decimal perfil, decimal acabamento) //using epplus
+        private double excel(string perfil, string acabamento) //using epplus
         {
             double valor;
             string path = @"documentos\Tabela Sul America jan 2025.xlsx";
@@ -357,11 +395,11 @@ namespace AplicativoVidracariaPopular
             using (ExcelPackage xlPackage = new(newFile))
             {
                 ExcelWorksheet ws = xlPackage.Workbook.Worksheets["Sheet1"];
-                for (int i = 2; i < 559; i++)
+                for (int i = 2; i < 560; i++)
                 {
-                    if (Convert.ToDecimal(ws.Cells[i, 1].Value) == perfil)
+                    if (ws.Cells[i, 1].Value.Equals(perfil))
                     {
-                        if (Convert.ToDecimal(ws.Cells[i, 2].Value) == acabamento)
+                        if (ws.Cells[i, 2].Value.Equals(acabamento))
                         {
                             valor = Convert.ToDouble(ws.Cells[i, 3].Value);
                             valor = Convert.ToDouble(valor.ToString("#.##"));
@@ -374,7 +412,7 @@ namespace AplicativoVidracariaPopular
             }
         }
 
-        private void word(int id) //using DocX
+        private void word(int id, int rowCount) //using DocX
         {
             var doc = DocX.Load(@"documentos\papelTimbradoVidracariaPopular.docx");
             CultureInfo ci = new("pt-BR");
@@ -415,206 +453,107 @@ namespace AplicativoVidracariaPopular
                 NewValue = textBoxEndereco.Text
             });
 
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.quantidade[i] != 0)
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#qtd{i}",
-                        NewValue = Program.quantidade[i].ToString()
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#qtd{i}",
-                        NewValue = ""
-                    });
-            }
+            Xceed.Document.NET.Table table = doc.AddTable(rowCount + 1, 9);
+            table.Alignment = Alignment.center;
+            table.Design = TableDesign.ColorfulList;
+            table.Rows[0].Cells[0].Paragraphs.First().Append("Qtd").FontSize(9).Bold().Alignment = Alignment.center;
+            table.Rows[0].Cells[1].Paragraphs.First().Append("Descrição(ões)").FontSize(9).Bold().Alignment = Alignment.center; ;
+            table.Rows[0].Cells[2].Paragraphs.First().Append("Moldura(s)").FontSize(9).Bold().Alignment = Alignment.center; ;
+            table.Rows[0].Cells[3].Paragraphs.First().Append("Vidro").FontSize(9).Bold().Alignment = Alignment.center; ;
+            table.Rows[0].Cells[4].Paragraphs.First().Append("Mdf").FontSize(9).Bold().Alignment = Alignment.center; ;
+            table.Rows[0].Cells[5].Paragraphs.First().Append("Paspatur").FontSize(9).Bold().Alignment = Alignment.center; ;
+            table.Rows[0].Cells[6].Paragraphs.First().Append("Medida(s)").FontSize(9).Bold().Alignment = Alignment.center; ;
+            table.Rows[0].Cells[7].Paragraphs.First().Append("Valor Unitário").FontSize(9).Bold().Alignment = Alignment.center; ;
+            table.Rows[0].Cells[8].Paragraphs.First().Append("Valor Total").FontSize(9).Bold().Alignment = Alignment.center;;
 
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.descricao[i] != "")
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#descricao{i}",
-                        NewValue = Program.descricao[i]
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#descricao{i}",
-                        NewValue = ""
-                    });
-            }
 
-            for (int i = 0; i < 10; i++)
+            int auxProgram = 0;
+            int auxTable = 1;
+            foreach (var  qE in Program.quadroExistente)
             {
-                if (Program.moldura1[i] & Program.moldura2[i])
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#moldura{i}-{1}",
-                        NewValue = $"{Program.moldura1Tipo1[i]} {Program.moldura1Tipo2[i]} - "
-                    });
-                else if (Program.moldura1[i])
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#moldura{i}-{1}",
-                        NewValue = $"{Program.moldura1Tipo1[i]} {Program.moldura1Tipo2[i]}"
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#moldura{i}-{1}",
-                        NewValue = ""
-                    });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.moldura2[i] & Program.moldura3[i])
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#moldura{i}-{2}",
-                        NewValue = $"{Program.moldura2Tipo1[i]} {Program.moldura2Tipo2[i]} - "
-                    });
-                else if (Program.moldura2[i])
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#moldura{i}-{2}",
-                        NewValue = $"{Program.moldura2Tipo1[i]} {Program.moldura2Tipo2[i]}"
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#moldura{i}-{2}",
-                        NewValue = ""
-                    });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.moldura3[i])
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#moldura{i}-{3}",
-                        NewValue = $"{Program.moldura3Tipo1[i]} {Program.moldura3Tipo2[i]}"
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#moldura{i}-{3}",
-                        NewValue = ""
-                    });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.vidro[i])
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#vidro{i}",
-                        NewValue = "SIM"
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#vidro{i}",
-                        NewValue = ""
-                    });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.mdf[i])
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#mdf{i}",
-                        NewValue = "SIM"
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#mdf{i}",
-                        NewValue = ""
-                    });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.paspatur[i])
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#paspatur{i}",
-                        NewValue = $"{Program.paspaturTamanho[i]}cm"
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#paspatur{i}",
-                        NewValue = ""
-                    });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.molduraTamanho1[i] != 0 & Program.molduraTamanho2[i] != 0)
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#medida{i}",
-                        NewValue = $"{Program.molduraTamanho1[i]}x{Program.molduraTamanho2[i]}"
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#medida{i}",
-                        NewValue = ""
-                    });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.valorUnitario[i] != 0)
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#vlrUnit{i}",
-                        NewValue = Program.valorUnitario[i].ToString("#.##")
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#vlrUnit{i}",
-                        NewValue = ""
-                    });
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                if (Program.valorTotal[0] != 0)
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#vlrTotal{i}",
-                        NewValue = Program.valorTotal[i].ToString("#.##")
-                    });
-                else
-                    doc.ReplaceText(new StringReplaceTextOptions()
-                    {
-                        SearchValue = $"#vlrTotal{i}",
-                        NewValue = ""
-                    });
-            }
-
-            if (Program.valorTotalGeral != 0)
-                doc.ReplaceText(new StringReplaceTextOptions()
+                if (Program.quadroExistente[auxProgram])
                 {
-                    SearchValue = "#vTotal",
-                    NewValue = Program.valorTotalGeral.ToString("#.##")
-                });
-            else
-                doc.ReplaceText(new StringReplaceTextOptions()
-                {
-                    SearchValue = "#vTotal",
-                    NewValue = ""
-                });
+                    table.Rows[auxTable].Cells[0].Paragraphs.First().Append(Program.quantidade[auxProgram].ToString()).FontSize(9);
+                    table.Rows[auxTable].Cells[1].Paragraphs.First().Append(Program.descricao[auxProgram]).FontSize(9);
+
+                    if (Program.moldura1[auxProgram] & Program.moldura2[auxProgram] & Program.moldura3[auxProgram])
+                        table.Rows[auxTable].Cells[2].Paragraphs.First().Append($"{Program.moldura1Tipo2[auxProgram]} {Program.moldura1Tipo1[auxProgram]}" +
+                            $" - {Program.moldura2Tipo1[auxProgram]} {Program.moldura2Tipo2[auxProgram]} - " +
+                            $"{Program.moldura3Tipo1[auxProgram]} {Program.moldura3Tipo2[auxProgram]}").FontSize(9);
+                    else if (Program.moldura1[auxProgram] & Program.moldura2[auxProgram])
+                        table.Rows[auxTable].Cells[2].Paragraphs.First().Append($"{Program.moldura1Tipo2[auxProgram]} {Program.moldura1Tipo1[auxProgram]}" +
+                            $" - {Program.moldura2Tipo1[auxProgram]} {Program.moldura2Tipo2[auxProgram]}").FontSize(9);
+                    else if (Program.moldura1[auxProgram])
+                        table.Rows[auxTable].Cells[2].Paragraphs.First().Append($"{Program.moldura1Tipo2[auxProgram]} {Program.moldura1Tipo1[auxProgram]}").FontSize(9);
+                    else
+                        table.Rows[auxTable].Cells[2].Paragraphs.First().Append("").FontSize(9);
+
+                    if (Program.vidro[auxProgram] & Program.vidroAR[auxProgram])
+                        table.Rows[auxTable].Cells[3].Paragraphs.First().Append("2mm-AR").FontSize(9);
+                    else if (Program.vidro[auxProgram])
+                        table.Rows[auxTable].Cells[3].Paragraphs.First().Append("2mm").FontSize(9);
+                    else if (Program.vidroAR[auxProgram])
+                        table.Rows[auxTable].Cells[3].Paragraphs.First().Append("AR").FontSize(9);
+                    else
+                        table.Rows[auxTable].Cells[3].Paragraphs.First().Append("").FontSize(9);
+
+                    if (Program.mdf[auxProgram])
+                        table.Rows[auxTable].Cells[4].Paragraphs.First().Append("SIM").FontSize(9);
+                    else
+                        table.Rows[auxTable].Cells[4].Paragraphs.First().Append("").FontSize(9);
+
+                    if (Program.paspatur[auxProgram])
+                        table.Rows[auxTable].Cells[5].Paragraphs.First().Append($"{Program.paspaturTamanho[auxProgram]}cm").FontSize(9);
+                    else
+                        table.Rows[auxTable].Cells[5].Paragraphs.First().Append("").FontSize(9);
+
+                    if (Program.molduraTamanho1[auxProgram] != 0 & Program.molduraTamanho2[auxProgram] != 0)
+                        table.Rows[auxTable].Cells[6].Paragraphs.First().Append($"{Program.molduraTamanho1[auxProgram]}x{Program.molduraTamanho2[auxProgram]}").FontSize(9);
+                    else
+                        table.Rows[auxTable].Cells[6].Paragraphs.First().Append("").FontSize(9);
+
+                    table.Rows[auxTable].Cells[7].Paragraphs.First().Append(Program.valorUnitario[auxProgram].ToString("#.##")).FontSize(9);
+                    table.Rows[auxTable].Cells[8].Paragraphs.First().Append(Program.valorTotal[auxProgram].ToString("#.##")).FontSize(9);
+
+                    auxTable++;
+                }
+                auxProgram++;
+            }
+            table.Rows[0].Cells[0].FillColor = Color.FromArgb(175, 171, 171);
+            table.Rows[0].Cells[1].FillColor = Color.FromArgb(175, 171, 171);
+            table.Rows[0].Cells[2].FillColor = Color.FromArgb(175, 171, 171);
+            table.Rows[0].Cells[3].FillColor = Color.FromArgb(175, 171, 171);
+            table.Rows[0].Cells[4].FillColor = Color.FromArgb(175, 171, 171);
+            table.Rows[0].Cells[5].FillColor = Color.FromArgb(175, 171, 171);
+            table.Rows[0].Cells[6].FillColor = Color.FromArgb(175, 171, 171);
+            table.Rows[0].Cells[7].FillColor = Color.FromArgb(175, 171, 171);
+            table.Rows[0].Cells[8].FillColor = Color.FromArgb(175, 171, 171);
+
+            foreach (var tRow in table.Rows)
+            {
+                tRow.Cells[0].Width = 10;
+                tRow.Cells[1].Width = 200;
+                tRow.Cells[2].Width = 250;
+                tRow.Cells[3].Width = 55;
+                tRow.Cells[4].Width = 35;
+                tRow.Cells[5].Width = 55;
+                tRow.Cells[6].Width = 55;
+                tRow.Cells[7].Width = 60;
+                tRow.Cells[8].Width = 60;
+            }
+
+            doc.ReplaceTextWithObject(new ObjectReplaceTextOptions()
+            {
+                SearchValue = "#tabela",
+                NewObject = table,
+                RegExOptions = RegexOptions.IgnoreCase
+            });
+
+            doc.ReplaceText(new StringReplaceTextOptions()
+            {
+                SearchValue = "#vTotal",
+                NewValue = Program.valorTotalGeral.ToString("#.##")
+            });
 
             doc.SaveAs(@"documentos\papelTimbradoGerado.docx");
         }
