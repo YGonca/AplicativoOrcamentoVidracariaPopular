@@ -17,20 +17,15 @@ namespace AplicativoVidracariaPopular
             InitializeComponent();
         }
 
-        private void FormQuadro1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         public void checkBoxMoldura1_CheckedChanged(object sender, EventArgs e)
         {
-            if (!checkBoxVidro.Checked & !checkBoxMdf.Checked & !checkBoxVidroAR.Checked)
+            if (!checkBoxVidro.Checked & !checkBoxMdf.Checked & !checkBoxVidroAR.Checked & !checkBoxEspelho.Checked)
             {
                 labelMoldura1Tipo.Visible = checkBoxMoldura1.Checked;
                 numericUpDownMoldura1.Visible = checkBoxMoldura1.Checked;
                 numericUpDownMoldura1_2.Visible = checkBoxMoldura1.Checked;
             }
-            if (!checkBoxMolduraExtra.Checked & !checkBoxVidro.Checked & !checkBoxMdf.Checked & !checkBoxPaspatur.Checked & !checkBoxVidroAR.Checked)
+            if (!checkBoxMolduraExtra.Checked & !checkBoxVidro.Checked & !checkBoxMdf.Checked & !checkBoxPaspatur.Checked & !checkBoxVidroAR.Checked & !checkBoxEspelho.Checked)
             {
                 labelDescricao1.Visible = checkBoxMoldura1.Checked;
                 textBoxDescricao.Visible = checkBoxMoldura1.Checked;
@@ -56,13 +51,14 @@ namespace AplicativoVidracariaPopular
 
         private void checkBoxVidro_CheckedChanged(object sender, EventArgs e)
         {
-            if (!checkBoxMoldura1.Checked & !checkBoxMdf.Checked & !checkBoxVidroAR.Checked)
+            checkBoxVidro2o.Visible = checkBoxVidro.Checked;
+            if (!checkBoxMoldura1.Checked & !checkBoxMdf.Checked & !checkBoxVidroAR.Checked & !checkBoxEspelho.Checked)
             {
                 labelMoldura1Tipo.Visible = checkBoxVidro.Checked;
                 numericUpDownMoldura1.Visible = checkBoxVidro.Checked;
                 numericUpDownMoldura1_2.Visible = checkBoxVidro.Checked;
             }
-            if (!checkBoxMoldura1.Checked & !checkBoxMolduraExtra.Checked & !checkBoxMdf.Checked & !checkBoxPaspatur.Checked & !checkBoxVidroAR.Checked)
+            if (!checkBoxMoldura1.Checked & !checkBoxMolduraExtra.Checked & !checkBoxMdf.Checked & !checkBoxPaspatur.Checked & !checkBoxVidroAR.Checked & !checkBoxEspelho.Checked)
             {
                 labelDescricao1.Visible = checkBoxVidro.Checked;
                 textBoxDescricao.Visible = checkBoxVidro.Checked;
@@ -71,15 +67,21 @@ namespace AplicativoVidracariaPopular
             }
         }
 
+        private void checkBoxVidro2o_CheckedChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
         private void checkBoxVidroAR_CheckedChanged(object sender, EventArgs e)
         {
-            if (!checkBoxMoldura1.Checked & !checkBoxMdf.Checked & !checkBoxVidro.Checked)
+            checkBoxVidroAR2o.Visible = checkBoxVidroAR.Checked;
+            if (!checkBoxMoldura1.Checked & !checkBoxMdf.Checked & !checkBoxVidro.Checked & !checkBoxEspelho.Checked)
             {
                 labelMoldura1Tipo.Visible = checkBoxVidroAR.Checked;
                 numericUpDownMoldura1.Visible = checkBoxVidroAR.Checked;
                 numericUpDownMoldura1_2.Visible = checkBoxVidroAR.Checked;
             }
-            if (!checkBoxMoldura1.Checked & !checkBoxMolduraExtra.Checked & !checkBoxMdf.Checked & !checkBoxPaspatur.Checked & !checkBoxVidro.Checked)
+            if (!checkBoxMoldura1.Checked & !checkBoxMolduraExtra.Checked & !checkBoxMdf.Checked & !checkBoxPaspatur.Checked & !checkBoxVidro.Checked & !checkBoxEspelho.Checked)
             {
                 labelDescricao1.Visible = checkBoxVidroAR.Checked;
                 textBoxDescricao.Visible = checkBoxVidroAR.Checked;
@@ -88,6 +90,27 @@ namespace AplicativoVidracariaPopular
             }
         }
 
+        private void checkBoxVidroAR2o_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBoxEspelho_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBoxMoldura1.Checked & !checkBoxMdf.Checked & !checkBoxVidro.Checked & !checkBoxVidroAR.Checked)
+            {
+                labelMoldura1Tipo.Visible = checkBoxEspelho.Checked;
+                numericUpDownMoldura1.Visible = checkBoxEspelho.Checked;
+                numericUpDownMoldura1_2.Visible = checkBoxEspelho.Checked;
+            }
+            if (!checkBoxMoldura1.Checked & !checkBoxMolduraExtra.Checked & !checkBoxMdf.Checked & !checkBoxPaspatur.Checked & !checkBoxVidro.Checked & !checkBoxVidroAR.Checked)
+            {
+                labelDescricao1.Visible = checkBoxEspelho.Checked;
+                textBoxDescricao.Visible = checkBoxEspelho.Checked;
+                labelQuantidade1.Visible = checkBoxEspelho.Checked;
+                numericUpDownQuantidade.Visible = checkBoxEspelho.Checked;
+            }
+        }
         private void checkBoxMdf_CheckedChanged(object sender, EventArgs e)
         {
             if (!checkBoxMoldura1.Checked & !checkBoxVidro.Checked & !checkBoxVidroAR.Checked)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Xml;
 using System.Data;
+using Spire.Doc.CompoundFile;
 
 namespace AplicativoVidracariaPopular
 {

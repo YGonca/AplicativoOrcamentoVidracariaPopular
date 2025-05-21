@@ -54,6 +54,11 @@
             checkBoxMoldura1 = new CheckBox();
             numericUpDownQuantidade = new NumericUpDown();
             checkBoxVidroAR = new CheckBox();
+            labelPrecoUnitario = new Label();
+            labelValorUnitario = new Label();
+            checkBoxEspelho = new CheckBox();
+            checkBoxVidroAR2o = new CheckBox();
+            checkBoxVidro2o = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)numericUpDownMoldura1_3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownMoldura1_2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownPaspaturValor).BeginInit();
@@ -65,7 +70,7 @@
             // 
             // textBoxDescricao
             // 
-            textBoxDescricao.Location = new Point(421, 358);
+            textBoxDescricao.Location = new Point(419, 315);
             textBoxDescricao.Name = "textBoxDescricao";
             textBoxDescricao.Size = new Size(332, 23);
             textBoxDescricao.TabIndex = 14;
@@ -77,7 +82,6 @@
             textBoxMolduraTipo1.Name = "textBoxMolduraTipo1";
             textBoxMolduraTipo1.Size = new Size(62, 23);
             textBoxMolduraTipo1.TabIndex = 1;
-            textBoxMolduraTipo1.Text = "0000";
             textBoxMolduraTipo1.Visible = false;
             // 
             // textBoxMolduraTipo2
@@ -86,7 +90,6 @@
             textBoxMolduraTipo2.Name = "textBoxMolduraTipo2";
             textBoxMolduraTipo2.Size = new Size(62, 23);
             textBoxMolduraTipo2.TabIndex = 7;
-            textBoxMolduraTipo2.Text = "0000";
             textBoxMolduraTipo2.Visible = false;
             // 
             // textBoxMolduraTipo3
@@ -95,7 +98,6 @@
             textBoxMolduraTipo3.Name = "textBoxMolduraTipo3";
             textBoxMolduraTipo3.Size = new Size(62, 23);
             textBoxMolduraTipo3.TabIndex = 9;
-            textBoxMolduraTipo3.Text = "0000";
             textBoxMolduraTipo3.Visible = false;
             // 
             // textBoxMolduraTipo1_2
@@ -104,7 +106,6 @@
             textBoxMolduraTipo1_2.Name = "textBoxMolduraTipo1_2";
             textBoxMolduraTipo1_2.Size = new Size(62, 23);
             textBoxMolduraTipo1_2.TabIndex = 2;
-            textBoxMolduraTipo1_2.Text = "0000";
             textBoxMolduraTipo1_2.Visible = false;
             // 
             // textBoxMolduraTipo2_2
@@ -113,7 +114,6 @@
             textBoxMolduraTipo2_2.Name = "textBoxMolduraTipo2_2";
             textBoxMolduraTipo2_2.Size = new Size(62, 23);
             textBoxMolduraTipo2_2.TabIndex = 8;
-            textBoxMolduraTipo2_2.Text = "0000";
             textBoxMolduraTipo2_2.Visible = false;
             // 
             // textBoxMolduraTipo3_2
@@ -122,7 +122,6 @@
             textBoxMolduraTipo3_2.Name = "textBoxMolduraTipo3_2";
             textBoxMolduraTipo3_2.Size = new Size(62, 23);
             textBoxMolduraTipo3_2.TabIndex = 10;
-            textBoxMolduraTipo3_2.Text = "0000";
             textBoxMolduraTipo3_2.Visible = false;
             // 
             // numericUpDownMoldura1_3
@@ -145,7 +144,7 @@
             // 
             // numericUpDownPaspaturValor
             // 
-            numericUpDownPaspaturValor.Location = new Point(282, 311);
+            numericUpDownPaspaturValor.Location = new Point(284, 359);
             numericUpDownPaspaturValor.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numericUpDownPaspaturValor.Name = "numericUpDownPaspaturValor";
             numericUpDownPaspaturValor.Size = new Size(60, 23);
@@ -154,7 +153,7 @@
             // 
             // numericUpDownPaspaturTamanho
             // 
-            numericUpDownPaspaturTamanho.Location = new Point(148, 311);
+            numericUpDownPaspaturTamanho.Location = new Point(148, 359);
             numericUpDownPaspaturTamanho.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numericUpDownPaspaturTamanho.Name = "numericUpDownPaspaturTamanho";
             numericUpDownPaspaturTamanho.Size = new Size(60, 23);
@@ -163,7 +162,7 @@
             // 
             // numericUpDownExtra
             // 
-            numericUpDownExtra.Location = new Point(148, 359);
+            numericUpDownExtra.Location = new Point(148, 403);
             numericUpDownExtra.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
             numericUpDownExtra.Name = "numericUpDownExtra";
             numericUpDownExtra.Size = new Size(60, 23);
@@ -183,7 +182,7 @@
             // 
             labelPaspaturValor.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelPaspaturValor.ForeColor = SystemColors.HotTrack;
-            labelPaspaturValor.Location = new Point(212, 301);
+            labelPaspaturValor.Location = new Point(214, 353);
             labelPaspaturValor.Name = "labelPaspaturValor";
             labelPaspaturValor.Size = new Size(64, 42);
             labelPaspaturValor.TabIndex = 30;
@@ -216,7 +215,7 @@
             // 
             labelDescricao1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelDescricao1.ForeColor = SystemColors.HotTrack;
-            labelDescricao1.Location = new Point(286, 343);
+            labelDescricao1.Location = new Point(284, 300);
             labelDescricao1.Name = "labelDescricao1";
             labelDescricao1.Size = new Size(129, 47);
             labelDescricao1.TabIndex = 37;
@@ -228,7 +227,7 @@
             // 
             checkBoxPaspatur.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             checkBoxPaspatur.ForeColor = SystemColors.HotTrack;
-            checkBoxPaspatur.Location = new Point(12, 296);
+            checkBoxPaspatur.Location = new Point(12, 348);
             checkBoxPaspatur.Name = "checkBoxPaspatur";
             checkBoxPaspatur.RightToLeft = RightToLeft.Yes;
             checkBoxPaspatur.Size = new Size(130, 42);
@@ -242,7 +241,7 @@
             // 
             checkBoxMdf.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             checkBoxMdf.ForeColor = SystemColors.HotTrack;
-            checkBoxMdf.Location = new Point(12, 248);
+            checkBoxMdf.Location = new Point(12, 300);
             checkBoxMdf.Name = "checkBoxMdf";
             checkBoxMdf.RightToLeft = RightToLeft.Yes;
             checkBoxMdf.Size = new Size(130, 42);
@@ -270,7 +269,7 @@
             // 
             checkBoxMolduraExtra.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             checkBoxMolduraExtra.ForeColor = SystemColors.HotTrack;
-            checkBoxMolduraExtra.Location = new Point(12, 344);
+            checkBoxMolduraExtra.Location = new Point(12, 396);
             checkBoxMolduraExtra.Name = "checkBoxMolduraExtra";
             checkBoxMolduraExtra.RightToLeft = RightToLeft.Yes;
             checkBoxMolduraExtra.Size = new Size(130, 42);
@@ -347,12 +346,84 @@
             checkBoxVidroAR.UseVisualStyleBackColor = true;
             checkBoxVidroAR.CheckedChanged += checkBoxVidroAR_CheckedChanged;
             // 
+            // labelPrecoUnitario
+            // 
+            labelPrecoUnitario.Font = new Font("Nirmala UI", 11.25F, FontStyle.Bold);
+            labelPrecoUnitario.ForeColor = Color.FromArgb(0, 126, 249);
+            labelPrecoUnitario.ImageAlign = ContentAlignment.MiddleRight;
+            labelPrecoUnitario.Location = new Point(599, 386);
+            labelPrecoUnitario.Name = "labelPrecoUnitario";
+            labelPrecoUnitario.Size = new Size(56, 40);
+            labelPrecoUnitario.TabIndex = 41;
+            labelPrecoUnitario.Text = "Preço:";
+            labelPrecoUnitario.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // labelValorUnitario
+            // 
+            labelValorUnitario.Font = new Font("Nirmala UI", 11.25F, FontStyle.Bold);
+            labelValorUnitario.ForeColor = Color.FromArgb(0, 126, 249);
+            labelValorUnitario.Location = new Point(658, 385);
+            labelValorUnitario.Name = "labelValorUnitario";
+            labelValorUnitario.Size = new Size(112, 43);
+            labelValorUnitario.TabIndex = 40;
+            labelValorUnitario.Text = "0";
+            labelValorUnitario.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // checkBoxEspelho
+            // 
+            checkBoxEspelho.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            checkBoxEspelho.ForeColor = SystemColors.HotTrack;
+            checkBoxEspelho.Location = new Point(12, 252);
+            checkBoxEspelho.Name = "checkBoxEspelho";
+            checkBoxEspelho.RightToLeft = RightToLeft.Yes;
+            checkBoxEspelho.Size = new Size(130, 42);
+            checkBoxEspelho.TabIndex = 42;
+            checkBoxEspelho.Text = "Espelho";
+            checkBoxEspelho.TextAlign = ContentAlignment.MiddleCenter;
+            checkBoxEspelho.UseVisualStyleBackColor = true;
+            checkBoxEspelho.CheckedChanged += checkBoxEspelho_CheckedChanged;
+            // 
+            // checkBoxVidroAR2o
+            // 
+            checkBoxVidroAR2o.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            checkBoxVidroAR2o.ForeColor = SystemColors.HotTrack;
+            checkBoxVidroAR2o.Location = new Point(153, 204);
+            checkBoxVidroAR2o.Name = "checkBoxVidroAR2o";
+            checkBoxVidroAR2o.RightToLeft = RightToLeft.Yes;
+            checkBoxVidroAR2o.Size = new Size(145, 42);
+            checkBoxVidroAR2o.TabIndex = 50;
+            checkBoxVidroAR2o.Text = "2o Vidro AR";
+            checkBoxVidroAR2o.TextAlign = ContentAlignment.MiddleCenter;
+            checkBoxVidroAR2o.UseVisualStyleBackColor = true;
+            checkBoxVidroAR2o.Visible = false;
+            checkBoxVidroAR2o.CheckedChanged += checkBoxVidroAR2o_CheckedChanged;
+            // 
+            // checkBoxVidro2o
+            // 
+            checkBoxVidro2o.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            checkBoxVidro2o.ForeColor = SystemColors.HotTrack;
+            checkBoxVidro2o.Location = new Point(148, 156);
+            checkBoxVidro2o.Name = "checkBoxVidro2o";
+            checkBoxVidro2o.RightToLeft = RightToLeft.Yes;
+            checkBoxVidro2o.Size = new Size(145, 42);
+            checkBoxVidro2o.TabIndex = 50;
+            checkBoxVidro2o.Text = "2o Vidro";
+            checkBoxVidro2o.TextAlign = ContentAlignment.MiddleCenter;
+            checkBoxVidro2o.UseVisualStyleBackColor = true;
+            checkBoxVidro2o.Visible = false;
+            checkBoxVidro2o.CheckedChanged += checkBoxVidro2o_CheckedChanged_1;
+            // 
             // FormQuadro
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
             ClientSize = new Size(765, 429);
+            Controls.Add(checkBoxVidro2o);
+            Controls.Add(checkBoxVidroAR2o);
+            Controls.Add(checkBoxEspelho);
+            Controls.Add(labelValorUnitario);
+            Controls.Add(labelPrecoUnitario);
             Controls.Add(numericUpDownQuantidade);
             Controls.Add(textBoxDescricao);
             Controls.Add(textBoxMolduraTipo1);
@@ -383,7 +454,6 @@
             Name = "FormQuadro";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormQuadro1";
-            Load += FormQuadro1_Load;
             ((System.ComponentModel.ISupportInitialize)numericUpDownMoldura1_3).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownMoldura1_2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownPaspaturValor).EndInit();
@@ -422,5 +492,18 @@
         public CheckBox checkBoxMoldura1;
         public NumericUpDown numericUpDownQuantidade;
         public CheckBox checkBoxVidroAR;
+        private Label labelPrecoUnitario;
+        public Label labelValorUnitario;
+        public CheckBox checkBoxEspelho;
+        public NumericUpDown numericUpDown1;
+        public Label label1;
+        public NumericUpDown numericUpDown2;
+        public Label label2;
+        public NumericUpDown numericUpDown3;
+        public Label label3;
+        public CheckBox checkBoxVidro2o;
+        public CheckBox checkBox2;
+
+        public CheckBox checkBoxVidroAR2o;
     }
 }

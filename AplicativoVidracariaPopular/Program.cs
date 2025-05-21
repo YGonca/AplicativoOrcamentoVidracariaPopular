@@ -1,18 +1,23 @@
 using GemBox.Pdf;
+using PdfiumViewer;
 
 namespace AplicativoVidracariaPopular
 {
     internal static class Program
     {
-        public static double valorVidro = 0.02;
-        public static double valorVidroAR = 0.06;
-        public static double valorMdf = 0.01;
+        public static double valorVidro = 0;
+        public static double valorVidroAR = 0;
+        public static double valorMdf = 0;
+        public static double valorEspelho = 0;
 
         public static bool[] moldura1 = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] moldura2 = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] moldura3 = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] vidro = { false, false, false, false, false, false, false, false, false, false };
+        public static bool[] vidro2o = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] vidroAR = { false, false, false, false, false, false, false, false, false, false };
+        public static bool[] vidroAR2o = { false, false, false, false, false, false, false, false, false, false };
+        public static bool[] espelho = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] mdf = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] paspatur = { false, false, false, false, false, false, false, false, false, false };
         public static bool[] extra = { false, false, false, false, false, false, false, false, false, false };
@@ -26,7 +31,7 @@ namespace AplicativoVidracariaPopular
         public static double[] molduraTamanho1 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public static double[] molduraTamanho2 = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public static double[] molduraExtra = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        public static double[] quantidade = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        public static double[] quantidade = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         public static double[] paspaturTamanho = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public static double[] paspaturValor = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public static double[] extraValor = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -34,6 +39,7 @@ namespace AplicativoVidracariaPopular
         public static double[] valorUnitario = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public static double[] valorTotal = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public static double valorTotalGeral = 0;
+
 
         /// <summary>
         ///  The main entry point for the application.
@@ -43,6 +49,7 @@ namespace AplicativoVidracariaPopular
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
+            
             ComponentInfo.SetLicense("FREE-LIMITED-KEY"); //GemBox
 
             ApplicationConfiguration.Initialize();
